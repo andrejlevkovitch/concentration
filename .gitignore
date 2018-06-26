@@ -1,0 +1,6 @@
+CMakeCashe.txt
+CMakeFiles/
+build/
+*.exe
+*.a
+*.so
