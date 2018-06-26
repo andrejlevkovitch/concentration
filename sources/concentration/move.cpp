@@ -3,7 +3,7 @@
 #include<string>
 #include<curses.h>
 
-#include"../../include/move.hpp"
+#include"move.hpp"
 
 void move_at(const Koords &in)
 {

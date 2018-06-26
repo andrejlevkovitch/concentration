@@ -1,7 +1,7 @@
 //fill_field.cpp
 
-#include"../../include/move.hpp"
-#include"../../include/colors.hpp"
+#include"move.hpp"
+#include"colors.hpp"
 
 void fill_field(const Koords &lhs_ucorner, const Koords &rhs_dcorner)
 {

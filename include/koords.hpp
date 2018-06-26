@@ -6,8 +6,8 @@
 
 class Koords {
     public:
-        static const unsigned PAS_SIDE{1};
-        static const unsigned PAS_FRWD{1};
+        static const unsigned PAS_SIDE_;
+        static const unsigned PAS_FRWD_;
     private:
         short y_;
         short x_;
@@ -20,6 +20,9 @@ class Koords {
         virtual bool operator>(const Koords &) const;
         Koords operator-(const Koords &) const;
         Koords operator+(const Koords &) const;
+        Koords operator*(const Koords &) const;
+        Koords operator*(int) const;
+        friend Koords operator*(int, const Koords &);
         bool operator==(const Koords &) const;
         virtual Koords &move_right();
         virtual Koords &move_left();

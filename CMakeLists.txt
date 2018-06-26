@@ -7,6 +7,14 @@ project(concentration)
 option(set_clang "set clang as default compiler" 0)
 option(cros_compile "cros compile for win32" 0)
 
+if(${UNIX})
+    message(STATUS "Unix system")
+elseif(${WIN32})
+    message(WARNING "Work is not guaranted")
+else()
+    message(FATAL_ERROR "System not supported")
+endif()
+
 if(set_clang)
     set(CMAKE_CXX_COMPILER clang++)
 endif()
@@ -15,6 +23,9 @@ if(cros_compile)
     set(CMAKE_CXX_COMPILER i686-w64-mingw32-g++-posix)
     set(CMAKE_CXX_FLAGS "-static-libstdc++ -static-libgcc")
 endif()
+
+message(STATUS ${PROJECT_NAME})
+message(STATUS ${CMAKE_CXX_COMPILER})
 
 add_definitions(-Wall -std=c++14)
 
@@ -25,8 +36,6 @@ file(GLOB CONCENTRATION_SRC "sources/concentration/*.cpp")
 
 if(cros_compile)
     find_package(PDCurses REQUIRED)
-    set(CURSES_INCLUDE_DIR ${PDCURSES_INCLUDE_DIR})
-    set(CURSES_LIBRARIES ${PDCURSES_LIBRARIES})
 else()
     find_package(Curses REQUIRED)
 endif()

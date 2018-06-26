@@ -16,13 +16,13 @@ const int ENTER {'\n'};
 
 class Concentration {
     public:
-        static const Koords BEG_SCR;
-        static const Koords END_SCR;
-        static const Koords BEG_CRS_POS;
-        static const short CARD_ON_SIDE;
-    private:
-        static const short U_CARD_PASS {1};
-        static const short S_CARD_PASS {2};
+        static const short CARD_ON_SIDE_;
+        static const Koords BEG_SCR_;
+        static const Koords DISTANCE_BITWIN_CARDS_;
+        static const Koords BEG_CRD_POS_;
+        static const Koords CARD_PASS_;
+        static const Koords END_SCR_;
+        static const int SLEEPING_TIME_;
     private:
         PACK pack_;
         Cursor cursor_;
@@ -36,6 +36,6 @@ class Concentration {
         bool game();
     private:
         const Card &show_current_card() const;
-        void close_cards() const;
-        auto current_card() -> decltype(compared_card_) const;
+        void close_last_cards();
+        const decltype(compared_card_) current_card();
 };

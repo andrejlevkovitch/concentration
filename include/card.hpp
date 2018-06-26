@@ -10,32 +10,23 @@
 
 typedef std::vector<std::string> SHIRT;
 
-const SHIRT CARD_VALUES
-{
-    "-->",
-    "<--",
-    ":-)",
-    "::{",
-    "(|)",
-    "/|\\",
-    "***",
-    "777",
-};
-
 class Card {
     private:
-        static const Koords value_koords_;
+        static const Koords VALUE_KOORDS_;
     public:
-        static const SHIRT card_;
+        static const std::vector<SHIRT> CARD_VALUES_;
+        static const SHIRT CARD_;
     private:
-        std::string value_;
+        unsigned short value_;
         Cell cell_;
     public:
-        Card (const std::string &value = "", const Cell = DEFAULT_CELL);
+        Card (unsigned short value_number = 0, const Cell = DEFAULT_CELL);
         ~Card();
         static short getYsize();
         static short getXsize();
         bool operator==(const Card &) const;
         const Card &show_face_down(const Koords &) const;
         const Card &show_face_up(const Koords &) const;
+    private:
+        void show_value(const Koords &) const;
 };

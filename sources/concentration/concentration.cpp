@@ -1,30 +1,21 @@
 //concentration.cpp
 
 #include<vector>
-#include<cmath>
 #include<random>
 #include<cstdbool>
-#include<tuple>
 #include<thread>
 
-#include"../../include/concentration.hpp"
-#include"../../include/move.hpp"
+#include"concentration.hpp"
+#include"move.hpp"
 
-const short Concentration::CARD_ON_SIDE (std::sqrt(CARD_VALUES.size() * 2));
-const Koords Concentration::BEG_SCR {3, 6};
-const Koords Concentration::END_SCR {BEG_SCR + Koords {16, 37}};
-const Koords Concentration::BEG_CRS_POS {BEG_SCR + Koords {1, 2}};
-
-Concentration::Concentration () : cursor_ {BEG_CRS_POS}
+Concentration::Concentration () : cursor_ {BEG_CRD_POS_}
 {
-    int counter {};
-    for (int i {}; i < CARD_ON_SIDE; ++i) {
-        for (int j {}; j < CARD_ON_SIDE; ++j) {
+    unsigned short counter {};
+    for (int i {}; i < CARD_ON_SIDE_; ++i) {
+        for (int j {}; j < CARD_ON_SIDE_; ++j) {
             pack_.insert({
-                    BEG_SCR + Koords {U_CARD_PASS, S_CARD_PASS} +
-                    Koords (i * (Card::getYsize() + U_CARD_PASS),
-                            j * (Card::getXsize() + S_CARD_PASS)),
-                    Card {CARD_VALUES[counter / 2], CARD_CELL}
+                    BEG_CRD_POS_ + Koords (i, j) * CARD_PASS_,
+                    Card (counter / 2, CARD_CELL)
                     });
             counter++;
         }
@@ -37,8 +28,8 @@ Concentration::~Concentration()
 
 void Concentration::show_pack() const
 {
-    frame(BEG_SCR, END_SCR);
-    fill_field(BEG_SCR + Koords {1, 1}, END_SCR - Koords {1, 1});
+    frame(BEG_SCR_, END_SCR_);
+    fill_field(BEG_SCR_ + Koords {1, 1}, END_SCR_ - Koords {1, 1});
     for (const auto &card : pack_) {
         card.second.show_face_down(card.first);
     }
@@ -75,7 +66,7 @@ bool Concentration::game()
             case 'k':
             case 'w':
             case KEY_UP:
-                if (cursor_.move_up() > BEG_SCR) {
+                if (cursor_.move_up() > BEG_SCR_) {
                 }
                 else {
                     cursor_.move_down();
@@ -84,7 +75,7 @@ bool Concentration::game()
             case 'j':
             case 's':
             case KEY_DOWN:
-                if (cursor_.move_down() < END_SCR) {
+                if (cursor_.move_down() < END_SCR_) {
                 }
                 else {
                     cursor_.move_up();
@@ -93,7 +84,7 @@ bool Concentration::game()
             case 'h':
             case 'a':
             case KEY_LEFT:
-                if (cursor_.move_left() > BEG_SCR) {
+                if (cursor_.move_left() > BEG_SCR_) {
                 }
                 else {
                     cursor_.move_right();
@@ -102,7 +93,7 @@ bool Concentration::game()
             case 'l':
             case 'd':
             case KEY_RIGHT:
-                if (cursor_.move_right() < END_SCR) {
+                if (cursor_.move_right() < END_SCR_) {
                 }
                 else {
                     cursor_.move_left();
@@ -119,13 +110,7 @@ bool Concentration::game()
                         open_cards_.insert((*current_card()).first);
                     }
                     else {
-                        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-                        (*compared_card_).second.show_face_down((*compared_card_).first);
-                        if (current_card() == pack_.end()) {
-                        }
-                        else {
-                            (*current_card()).second.show_face_down(cursor_);
-                        }
+                        close_last_cards();
                     }
                     is_second = false;
                 }
@@ -152,11 +137,21 @@ const Card &Concentration::show_current_card() const
     return pack_.find(cursor_)->second.show_face_up(cursor_);
 }
 
-auto Concentration::current_card() -> decltype(compared_card_) const
+auto Concentration::current_card() -> const decltype(compared_card_)
 {
     auto temp {pack_.find(cursor_)};
     if (open_cards_.find(temp->first) == open_cards_.end())
         return temp;
     else
         return pack_.end();
+}
+
+void Concentration::close_last_cards()
+{
+    std::this_thread::sleep_for(std::chrono::milliseconds(Concentration::SLEEPING_TIME_));
+    (*compared_card_).second.show_face_down((*compared_card_).first);
+    if (current_card() != pack_.end()) {
+        (*current_card()).second.show_face_down(cursor_);
+    }
+    return;
 }

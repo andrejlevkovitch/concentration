@@ -2,9 +2,9 @@
 
 #include<curses.h>
 
-#include"../../include/koords.hpp"
-#include"../../include/colors.hpp"
-#include"../../include/move.hpp"
+#include"koords.hpp"
+#include"colors.hpp"
+#include"move.hpp"
 
 void frame(const Koords &lhs_ucorner, const Koords &rhs_dcorner)
 {

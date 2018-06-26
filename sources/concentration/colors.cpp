@@ -2,7 +2,7 @@
 
 #include<curses.h>
 
-#include"../../include/colors.hpp"
+#include"colors.hpp"
 
 void init_colors(void)
 {

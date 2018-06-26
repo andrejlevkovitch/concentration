@@ -1,11 +1,13 @@
 //cursor.hpp
 
+#pragma once
+
 #include"koords.hpp"
 
 class Cursor : public Koords {
     private:
-        static const unsigned PAS_SIDE {9};
-        static const unsigned PAS_FRWD {4};
+        static const decltype(Koords {}.getY()) PAS_FRWD_;
+        static const decltype(Koords {}.getX()) PAS_SIDE_;
     public:
         Cursor (const Koords &in);
         ~Cursor();
