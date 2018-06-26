@@ -6,7 +6,6 @@
 #include<cmath>
 
 const Koords Card::VALUE_KOORDS_ {1, 2};
-
 const std::vector<SHIRT> Card::CARD_VALUES_ {
     {"-->"},
     {"<--"},
@@ -27,7 +26,6 @@ const std::vector<SHIRT> Card::CARD_VALUES_ {
     {"^_^"},
     {"!!!"},
 };
-
 const SHIRT Card::CARD_ {
     "+-----+",
     "|     |",
@@ -45,5 +43,7 @@ const Koords Concentration::CARD_PASS_ {
 const Koords Concentration::END_SCR_ {BEG_CRD_POS_ + CARD_ON_SIDE_ * CARD_PASS_
 };
 
-const decltype(Koords {}.getY()) Cursor::PAS_FRWD_ {Concentration::CARD_PASS_.getY()};
-const decltype(Koords {}.getX()) Cursor::PAS_SIDE_ {Concentration::CARD_PASS_.getX()};
+const decltype(Koords {}.getY()) Cursor::PAS_FRWD_{
+    Concentration::CARD_PASS_.getY()};
+const decltype(Koords {}.getX()) Cursor::PAS_SIDE_ {
+    Concentration::CARD_PASS_.getX()};

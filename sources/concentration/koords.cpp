@@ -81,7 +81,7 @@ Koords Koords::operator*(const Koords &rhs) const
 
 Koords Koords::operator*(int n) const
 {
-    return Koords (y_ * n, x_ * n);
+    return Koords (n, n) * *this;
 }
 
 Koords operator*(int n, const Koords &in)

@@ -11,7 +11,6 @@ int main(int argc, char *argv[])
 {
     initscr();
     keypad(stdscr, TRUE);
-    keypad(curscr,TRUE);
     noecho();
     init_colors();
     Concentration a {};
