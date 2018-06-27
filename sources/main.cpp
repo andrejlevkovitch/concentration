@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     keypad(stdscr, TRUE);
     noecho();
     init_colors();
-    Concentration a {};
+    Concentration a {10};
     a.game();
     endwin();
     return 0;

@@ -9,13 +9,17 @@
 #include"concentration.hpp"
 #include"move.hpp"
 
+const unsigned short &Concentration::MIN_SIDE_SIZE() {
+    static const unsigned short retval {4};
+    return retval;
+}
 const int &Concentration::SLEEPING_TIME()
 {
     static const int retval {500};
     return retval;
 };
 
-const unsigned short &Concentration::CARD_ON_SIDE()
+const unsigned short &Concentration::MAX_SIDE_SIZE()
 {
     static const unsigned short retval (sqrt(Card::CARD_VALUES().size() * 2));
     return retval;
@@ -23,7 +27,7 @@ const unsigned short &Concentration::CARD_ON_SIDE()
 
 const Koords &Concentration::BEG_SCR()
 {
-    static const Koords retval {0, 5};
+    static const Koords retval {3, 5};
     return retval;
 };
 
@@ -47,17 +51,20 @@ const Koords &Concentration::CARD_PASS()
     return retval;
 };
 
-const Koords &Concentration::END_SCR()
+const Koords &Concentration::END_SCR() const
 {
-    static const Koords retval {BEG_CRD_POS() + CARD_ON_SIDE() * CARD_PASS()};
+    static const Koords retval {BEG_CRD_POS() + size_ * CARD_PASS()};
     return retval;
 };
 
-Concentration::Concentration () : cursor_ {BEG_CRD_POS()}
+Concentration::Concentration (unsigned short size) : cursor_ {BEG_CRD_POS()}
 {
+    size_ = (size > MAX_SIDE_SIZE()) ? MAX_SIDE_SIZE() : size;
+    size_ = (size_ % 2) ? size_ - 1 : size_;
+    size_ = (size_ < MIN_SIDE_SIZE()) ? MIN_SIDE_SIZE() : size_;
     unsigned short counter {};
-    for (int i {}; i < CARD_ON_SIDE(); ++i) {
-        for (int j {}; j < CARD_ON_SIDE(); ++j) {
+    for (int i {}; i < size_; ++i) {
+        for (int j {}; j < size_; ++j) {
             pack_.insert({
                     BEG_CRD_POS() + Koords (i, j) * CARD_PASS(),
                     Card (counter / 2, CARD_CELL)
