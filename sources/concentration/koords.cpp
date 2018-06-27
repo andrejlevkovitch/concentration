@@ -3,8 +3,16 @@
 #include"koords.hpp"
 #include<cstdbool>
 
-const unsigned Koords::PAS_SIDE_ {1};
-const unsigned Koords::PAS_FRWD_ {1};
+const unsigned short &Koords::PAS_SIDE()
+{
+    static const unsigned short retval {1};
+    return retval;
+};
+const unsigned short &Koords::PAS_FRWD()
+{
+    static const unsigned short retval {1};
+    return retval;
+};
 
 Koords::Koords (short y, short x) : y_(y), x_(x)
 {
@@ -42,25 +50,25 @@ bool Koords::operator>(const Koords &right) const
 
 Koords &Koords::move_right()
 {
-    x_ += PAS_SIDE_;
+    x_ += PAS_SIDE();
     return *this;
 }
 
 Koords &Koords::move_left()
 {
-    x_ -= PAS_SIDE_;
+    x_ -= PAS_SIDE();
     return *this;
 }
 
 Koords &Koords::move_up()
 {
-    y_ -= PAS_FRWD_;
+    y_ -= PAS_FRWD();
     return *this;
 }
 
 Koords &Koords::move_down()
 {
-    y_ += PAS_FRWD_;
+    y_ += PAS_FRWD();
     return *this;
 }
 

@@ -6,8 +6,8 @@
 
 class Koords {
     public:
-        static const unsigned PAS_SIDE_;
-        static const unsigned PAS_FRWD_;
+        static const unsigned short &PAS_SIDE();
+        static const unsigned short &PAS_FRWD();
     private:
         short y_;
         short x_;

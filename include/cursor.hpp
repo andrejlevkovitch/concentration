@@ -5,9 +5,9 @@
 #include"koords.hpp"
 
 class Cursor : public Koords {
-    private:
-        static const decltype(Koords {}.getY()) PAS_FRWD_;
-        static const decltype(Koords {}.getX()) PAS_SIDE_;
+    public:
+        static const decltype(Koords {}.getY()) &PAS_FRWD();
+        static const decltype(Koords {}.getX()) &PAS_SIDE();
     public:
         Cursor (const Koords &in);
         ~Cursor();

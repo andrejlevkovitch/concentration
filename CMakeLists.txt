@@ -24,8 +24,8 @@ if(cros_compile)
     set(CMAKE_CXX_FLAGS "-static-libstdc++ -static-libgcc")
 endif()
 
-message(STATUS ${PROJECT_NAME})
-message(STATUS ${CMAKE_CXX_COMPILER})
+message(STATUS "Project " ${PROJECT_NAME})
+message(STATUS "cxx compiler " ${CMAKE_CXX_COMPILER})
 
 add_definitions(-Wall -std=c++14)
 

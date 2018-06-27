@@ -16,13 +16,13 @@ const int ENTER {'\n'};
 
 class Concentration {
     public:
-        static const short CARD_ON_SIDE_;
-        static const Koords BEG_SCR_;
-        static const Koords DISTANCE_BITWIN_CARDS_;
-        static const Koords BEG_CRD_POS_;
-        static const Koords CARD_PASS_;
-        static const Koords END_SCR_;
-        static const int SLEEPING_TIME_;
+        static const unsigned short &CARD_ON_SIDE();
+        static const Koords &BEG_SCR();
+        static const Koords &DISTANCE_BITWIN_CARDS();
+        static const Koords &BEG_CRD_POS();
+        static const Koords &CARD_PASS();
+        static const Koords &END_SCR();
+        static const int &SLEEPING_TIME();
     private:
         PACK pack_;
         Cursor cursor_;
