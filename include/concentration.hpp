@@ -10,6 +10,7 @@
 
 #include<vector>
 #include<map>
+#include<chrono>
 
 #include"card.hpp"
 #include"cursor.hpp"
@@ -27,7 +28,7 @@ class Concentration {
         static const Koords &DISTANCE_BITWIN_CARDS();
         static const Koords &BEG_CRD_POS();
         static const Koords &CARD_PASS();
-        static const int &SLEEPING_TIME();
+        static const std::chrono::milliseconds &SLEEPING_TIME();
     private:
         unsigned short size_;
         const Koords &END_SCR() const;

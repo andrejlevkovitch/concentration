@@ -3,6 +3,7 @@
 #include<vector>
 #include<random>
 #include<cstdbool>
+#include<chrono>
 #include<thread>
 #include<cmath>
 
@@ -13,11 +14,6 @@ const unsigned short &Concentration::MIN_SIDE_SIZE() {
     static const unsigned short retval {4};
     return retval;
 }
-const int &Concentration::SLEEPING_TIME()
-{
-    static const int retval {500};
-    return retval;
-};
 
 const unsigned short &Concentration::MAX_SIDE_SIZE()
 {
@@ -54,6 +50,12 @@ const Koords &Concentration::CARD_PASS()
 const Koords &Concentration::END_SCR() const
 {
     static const Koords retval {BEG_CRD_POS() + size_ * CARD_PASS()};
+    return retval;
+};
+
+const std::chrono::milliseconds &Concentration::SLEEPING_TIME()
+{
+    static const std::chrono::milliseconds retval {500};
     return retval;
 };
 
@@ -195,8 +197,7 @@ auto Concentration::current_card_pair() -> const decltype(compared_card_pair_)
 
 void Concentration::close_last_cards()
 {
-    std::this_thread::sleep_for(std::chrono::milliseconds(
-                Concentration::SLEEPING_TIME()));
+    std::this_thread::sleep_for(Concentration::SLEEPING_TIME());
     compared_card_pair_->second.change_status().
         show_card(compared_card_pair_->first);
     current_card_pair()->second.change_status().show_card(cursor_);
