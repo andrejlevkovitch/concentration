@@ -48,8 +48,13 @@ const SHIRT &Card::CARD()
     return retval;
 };
 
-Card::Card (unsigned short card_number, const Cell cell) :
-    cell_ {cell}
+const Cell &Card::CELL()
+{
+    static const Cell retvalue {CARD_CELL};
+    return retvalue;
+};
+
+Card::Card (unsigned short card_number) : is_open_(false)
 {
     value_ = (card_number < CARD_VALUES().size()) ? card_number : 0;
 }
@@ -58,10 +63,20 @@ Card::~Card()
 {
 }
 
-const Card &Card::show_face_down(const Koords &in) const
+bool Card::is_open() const
+{
+    return is_open_;
+}
+
+const Card &Card::change_status()
+{
+    is_open_ = !is_open_;
+    return *this;
+}
+
+void Card::show_shirt(const Koords &in)
 {
     Koords temp {in};
-    attron(COLOR_PAIR(cell_));
     for (int i {}; i < CARD().size(); ++i) {
         move_at(temp);
         for (int j {}; j < CARD()[i].size(); ++j) {
@@ -69,18 +84,33 @@ const Card &Card::show_face_down(const Koords &in) const
         }
         temp.move_down();
     }
-    attroff(COLOR_PAIR(cell_));
+    return;
+}
+
+const Card &Card::show_card(const Koords &in) const
+{
+    if (is_open_) {
+        attron(A_REVERSE);
+    }
+    attron(COLOR_PAIR(CELL()));
+    show_shirt(in);
+    if (is_open_) {
+        show_value(in);
+    }
+    attroff(COLOR_PAIR(CELL()));
+    if (is_open_) {
+        attroff(A_REVERSE);
+    }
+
     refresh();
     return *this;
 }
 
-const Card &Card::show_face_up(const Koords &in) const
+const Card &Card::highlith(const Koords &in) const
 {
-    attron(A_REVERSE);
-    show_face_down(in);
-    show_value(in);
-    attroff(A_REVERSE);
-    refresh();
+    attron(A_BOLD);
+    show_card(in);
+    attroff(A_BOLD);
     return *this;
 }
 
@@ -104,7 +134,6 @@ bool Card::operator==(const Card &rhs) const
 
 void Card::show_value(const Koords &in) const
 {
-    attron(COLOR_PAIR(cell_));
     auto temp {in + VALUE_KOORDS()};
     for (int i {}; i < CARD_VALUES()[value_].size(); ++i) {
         move_at(temp);
@@ -113,6 +142,5 @@ void Card::show_value(const Koords &in) const
         }
         temp.move_down();
     }
-    attroff(COLOR_PAIR(cell_));
     return;
 }

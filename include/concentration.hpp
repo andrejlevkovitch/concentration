@@ -4,7 +4,6 @@
 
 #include<vector>
 #include<map>
-#include<set>
 
 #include"card.hpp"
 #include"cursor.hpp"
@@ -29,7 +28,6 @@ class Concentration {
         PACK pack_;
         Cursor cursor_;
         decltype(pack_.find(cursor_)) compared_card_;
-        std::set<Koords, Koords::greater> open_cards_;
     public:
         Concentration (unsigned short size);
         ~Concentration();
@@ -37,7 +35,9 @@ class Concentration {
         void shuffle();
         bool game();
     private:
-        const Card &show_current_card() const;
+        const Card &open_current_card();
         void close_last_cards();
         const decltype(compared_card_) current_card();
+        const Card &higlith_current_card_on() const;
+        const Card &higlith_current_card_off() const;
 };

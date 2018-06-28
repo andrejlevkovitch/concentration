@@ -5,6 +5,7 @@ cmake_minimum_required(VERSION 3.5)
 project(concentration)
 
 option(set_clang "set clang as default compiler" 0)
+option(set_gpp "set g++ as default compiler" 0)
 option(cros_compile "cros compile for win32" 0)
 
 if(${UNIX})
@@ -15,6 +16,9 @@ else()
     message(FATAL_ERROR "System not supported")
 endif()
 
+if(set_gpp)
+    set(CMAKE_CXX_COMPILER g++)
+endif()
 if(set_clang)
     set(CMAKE_CXX_COMPILER clang++)
 endif()

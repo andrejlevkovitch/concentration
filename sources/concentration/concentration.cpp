@@ -67,7 +67,7 @@ Concentration::Concentration (unsigned short size) : cursor_ {BEG_CRD_POS()}
         for (int j {}; j < size_; ++j) {
             pack_.insert({
                     BEG_CRD_POS() + Koords (i, j) * CARD_PASS(),
-                    Card (counter / 2, CARD_CELL)
+                    Card (counter / 2)
                     });
             counter++;
         }
@@ -83,7 +83,7 @@ void Concentration::show_pack() const
     frame(BEG_SCR(), END_SCR());
     fill_field(BEG_SCR() + Koords {1, 1}, END_SCR() - Koords {1, 1});
     for (const auto &card : pack_) {
-        card.second.show_face_down(card.first);
+        card.second.show_card(card.first);
     }
     return;
 }
@@ -114,63 +114,60 @@ bool Concentration::game()
     bool is_second = false;
     do {
         move_at(cursor_);
+        higlith_current_card_on();
         switch (ch = getch()) {
             case 'k':
             case 'w':
             case KEY_UP:
-                if (cursor_.move_up() > BEG_SCR()) {
-                }
-                else {
+                higlith_current_card_off();
+                if (!(cursor_.move_up() > BEG_SCR())) {
                     cursor_.move_down();
                 }
+                higlith_current_card_on();
                 break;
             case 'j':
             case 's':
             case KEY_DOWN:
-                if (cursor_.move_down() < END_SCR()) {
-                }
-                else {
+                higlith_current_card_off();
+                if (!(cursor_.move_down() < END_SCR())) {
                     cursor_.move_up();
                 }
+                higlith_current_card_on();
                 break;
             case 'h':
             case 'a':
             case KEY_LEFT:
-                if (cursor_.move_left() > BEG_SCR()) {
-                }
-                else {
+                higlith_current_card_off();
+                if (!(cursor_.move_left() > BEG_SCR())) {
                     cursor_.move_right();
                 }
+                higlith_current_card_on();
                 break;
             case 'l':
             case 'd':
             case KEY_RIGHT:
-                if (cursor_.move_right() < END_SCR()) {
-                }
-                else {
+                higlith_current_card_off();
+                if (!(cursor_.move_right() < END_SCR())) {
                     cursor_.move_left();
                 }
+                higlith_current_card_on();
                 break;
             case ENTER:
                 if (is_second) {
                     if (compared_card_ == current_card() ||
-                            current_card() == pack_.end()) {
+                            current_card()->second.is_open()) {
                         break;
                     }
-                    show_current_card();
-                    if ((*compared_card_).second == (*current_card()).second) {
-                        open_cards_.insert((*compared_card_).first);
-                        open_cards_.insert((*current_card()).first);
-                    }
-                    else {
+                    open_current_card();
+                    if (!((*compared_card_).second == (*current_card()).second)) {
                         close_last_cards();
                     }
                     is_second = false;
                 }
                 else {
                     compared_card_ = current_card();
-                    if (compared_card_ != pack_.end()) {
-                        show_current_card();
+                    if (!compared_card_->second.is_open()) {
+                        open_current_card();
                         is_second = true;
                     }
                 }
@@ -185,26 +182,34 @@ bool Concentration::game()
     return false;
 }
 
-const Card &Concentration::show_current_card() const
+const Card &Concentration::open_current_card()
 {
-    return pack_.find(cursor_)->second.show_face_up(cursor_);
+    return current_card()->second.change_status().show_card(cursor_);
 }
 
 auto Concentration::current_card() -> const decltype(compared_card_)
 {
-    auto temp {pack_.find(cursor_)};
-    if (open_cards_.find(temp->first) == open_cards_.end())
-        return temp;
-    else
-        return pack_.end();
+    return pack_.find(cursor_);
 }
 
 void Concentration::close_last_cards()
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(Concentration::SLEEPING_TIME()));
-    (*compared_card_).second.show_face_down((*compared_card_).first);
-    if (current_card() != pack_.end()) {
-        (*current_card()).second.show_face_down(cursor_);
+    (*compared_card_).second.change_status();
+    (*compared_card_).second.show_card((*compared_card_).first);
+    if (!current_card()->second.is_open()) {
+        (*current_card()).second.change_status();
+        (*current_card()).second.show_card(cursor_);
     }
     return;
+}
+
+const Card &Concentration::higlith_current_card_on() const
+{
+    return pack_.find(cursor_)->second.highlith(cursor_);
+}
+
+const Card &Concentration::higlith_current_card_off() const
+{
+    return pack_.find(cursor_)->second.show_card(cursor_);
 }

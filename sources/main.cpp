@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
 {
     initscr();
     keypad(stdscr, TRUE);
+    leaveok(stdscr, TRUE);
     noecho();
     init_colors();
     Concentration a {10};
