@@ -49,8 +49,7 @@ const Koords &Concentration::CARD_PASS()
 
 const Koords &Concentration::END_SCR() const
 {
-    static const Koords retval {BEG_CRD_POS() + size_ * CARD_PASS()};
-    return retval;
+    return end_scr_;
 };
 
 const std::chrono::milliseconds &Concentration::SLEEPING_TIME()
@@ -64,6 +63,7 @@ Concentration::Concentration (unsigned short size) : cursor_ {BEG_CRD_POS()}
     size_ = (size > MAX_SIDE_SIZE()) ? MAX_SIDE_SIZE() : size;
     size_ = (size_ % 2) ? size_ - 1 : size_;
     size_ = (size_ < MIN_SIDE_SIZE()) ? MIN_SIDE_SIZE() : size_;
+    end_scr_ = BEG_CRD_POS() + size_ * CARD_PASS();
     unsigned short counter {};
     for (int i {}; i < size_; ++i) {
         for (int j {}; j < size_; ++j) {

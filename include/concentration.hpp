@@ -30,8 +30,10 @@ class Concentration {
         static const Koords &CARD_PASS();
         static const std::chrono::milliseconds &SLEEPING_TIME();
     private:
-        unsigned short size_;
         const Koords &END_SCR() const;
+    private:
+        unsigned short size_;
+        Koords end_scr_;
         PACK pack_;
         Cursor cursor_;
         decltype(pack_.find(cursor_)) compared_card_pair_;

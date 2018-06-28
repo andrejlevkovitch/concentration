@@ -14,8 +14,10 @@ int main(int argc, char *argv[])
     leaveok(stdscr, TRUE);
     noecho();
     init_colors();
-    Concentration a {10};
+    Concentration a {4};
     a.game();
+    Concentration b {8};
+    b.game();
     endwin();
     return 0;
 }
