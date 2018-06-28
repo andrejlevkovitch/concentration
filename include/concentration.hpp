@@ -27,7 +27,7 @@ class Concentration {
         const Koords &END_SCR() const;
         PACK pack_;
         Cursor cursor_;
-        decltype(pack_.find(cursor_)) compared_card_;
+        decltype(pack_.find(cursor_)) compared_card_pair_;
     public:
         Concentration (unsigned short size);
         ~Concentration();
@@ -37,7 +37,7 @@ class Concentration {
     private:
         const Card &open_current_card();
         void close_last_cards();
-        const decltype(compared_card_) current_card();
+        const decltype(compared_card_pair_) current_card_pair();
         const Card &higlith_current_card_on() const;
         const Card &higlith_current_card_off() const;
 };

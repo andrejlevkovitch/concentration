@@ -154,19 +154,20 @@ bool Concentration::game()
                 break;
             case ENTER:
                 if (is_second) {
-                    if (compared_card_ == current_card() ||
-                            current_card()->second.is_open()) {
+                    if (compared_card_pair_ == current_card_pair() ||
+                            current_card_pair()->second.is_open()) {
                         break;
                     }
                     open_current_card();
-                    if (!(compared_card_->second == current_card()->second)) {
+                    if (!(compared_card_pair_->second ==
+                                current_card_pair()->second)) {
                         close_last_cards();
                     }
                     is_second = false;
                 }
                 else {
-                    compared_card_ = current_card();
-                    if (!compared_card_->second.is_open()) {
+                    compared_card_pair_ = current_card_pair();
+                    if (!compared_card_pair_->second.is_open()) {
                         open_current_card();
                         is_second = true;
                     }
@@ -184,10 +185,10 @@ bool Concentration::game()
 
 const Card &Concentration::open_current_card()
 {
-    return current_card()->second.change_status().show_card(cursor_);
+    return current_card_pair()->second.change_status().show_card(cursor_);
 }
 
-auto Concentration::current_card() -> const decltype(compared_card_)
+auto Concentration::current_card_pair() -> const decltype(compared_card_pair_)
 {
     return pack_.find(cursor_);
 }
@@ -196,8 +197,9 @@ void Concentration::close_last_cards()
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(
                 Concentration::SLEEPING_TIME()));
-    compared_card_->second.change_status().show_card(compared_card_->first);
-    current_card()->second.change_status().show_card(cursor_);
+    compared_card_pair_->second.change_status().
+        show_card(compared_card_pair_->first);
+    current_card_pair()->second.change_status().show_card(cursor_);
     return;
 }
 
