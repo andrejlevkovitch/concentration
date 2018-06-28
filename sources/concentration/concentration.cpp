@@ -98,8 +98,13 @@ void Concentration::shuffle()
     for (const auto &card : pack_) {
         koords.push_back(card.first);
     }
+#ifdef __linux__
     std::random_device rd;
     std::mt19937 gen {rd()};
+#else
+    static std::mt19937 gen(std::chrono::system_clock::to_time_t
+            (std::chrono::system_clock::now()));
+#endif
     while (n) {
         std::uniform_int_distribution<int> dist {0, n};
         std::swap(pack_[koords[n]], pack_[koords[dist(gen)]]);
@@ -175,6 +180,7 @@ bool Concentration::game()
                     }
                 }
                 break;
+            case EOF:
             case '':
                 ch = ESC;
                 break;
