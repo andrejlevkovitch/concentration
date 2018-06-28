@@ -159,7 +159,7 @@ bool Concentration::game()
                         break;
                     }
                     open_current_card();
-                    if (!((*compared_card_).second == (*current_card()).second)) {
+                    if (!(compared_card_->second == current_card()->second)) {
                         close_last_cards();
                     }
                     is_second = false;
@@ -194,13 +194,10 @@ auto Concentration::current_card() -> const decltype(compared_card_)
 
 void Concentration::close_last_cards()
 {
-    std::this_thread::sleep_for(std::chrono::milliseconds(Concentration::SLEEPING_TIME()));
-    (*compared_card_).second.change_status();
-    (*compared_card_).second.show_card((*compared_card_).first);
-    if (!current_card()->second.is_open()) {
-        (*current_card()).second.change_status();
-        (*current_card()).second.show_card(cursor_);
-    }
+    std::this_thread::sleep_for(std::chrono::milliseconds(
+                Concentration::SLEEPING_TIME()));
+    compared_card_->second.change_status().show_card(compared_card_->first);
+    current_card()->second.change_status().show_card(cursor_);
     return;
 }
 
