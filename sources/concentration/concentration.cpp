@@ -9,6 +9,7 @@
 
 #include"concentration.hpp"
 #include"move.hpp"
+#include"screen.hpp"
 
 const unsigned short &Concentration::MIN_SIDE_SIZE() {
     static const unsigned short retval {4};
@@ -82,8 +83,7 @@ Concentration::~Concentration()
 
 void Concentration::show_pack() const
 {
-    frame(BEG_SCR(), END_SCR());
-    fill_field(BEG_SCR() + Koords {1, 1}, END_SCR() - Koords {1, 1});
+    Screen(BEG_SCR(), END_SCR());
     for (const auto &card : pack_) {
         card.second.show_card(card.first);
     }
